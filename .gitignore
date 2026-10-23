@@ -1,0 +1,16 @@
+# Node modules
+node_modules/
+
+# WhatsApp Web Session & Auth Data (Contains private login credentials)
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Runtime Generated Files & Reports
+qr.png
+final-report.txt
+progress.json
+
+# Environment & Logs
+*.log
+.DS_Store
+Thumbs.db

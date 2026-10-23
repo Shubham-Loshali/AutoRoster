@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Web QR Code Scanner</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #25d366;
+      --accent-glow: rgba(37, 211, 102, 0.35);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0a0f1d 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 50px rgba(37, 211, 102, 0.1);
+      animation: fadeIn 0.6s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .brand svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--accent);
+      filter: drop-shadow(0 0 10px var(--accent-glow));
+    }
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .qr-container {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      position: relative;
+      min-width: 290px;
+      min-height: 290px;
+      margin-bottom: 20px;
+    }
+    .qr-container img {
+      width: 260px;
+      height: 260px;
+      display: block;
+      image-rendering: pixelated;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37, 211, 102, 0.12);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      color: #4ade80;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+    .steps {
+      text-align: left;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      padding: 16px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .steps ol {
+      padding-left: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .steps strong {
+      color: var(--text);
+    }
+    .footer {
+      margin-top: 18px;
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.06c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31c-.82-1.31-1.26-2.83-1.26-4.39 0-4.46 3.63-8.09 8.09-8.09s8.09 3.63 8.09 8.09-3.63 8.09-8.09 8.09zm4.43-6.07c-.24-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.41-.41-.56-.42l-.48-.01c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02s.87 2.34 1 2.51c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+      <h1>Scan WhatsApp QR</h1>
+    </div>
+    <div class="subtitle">Connect your account to start automated additions</div>
+
+    <div class="status-badge" id="badge">
+      <div class="pulse"></div>
+      <span id="status-text">Live QR Code (Auto-refreshing)</span>
+    </div>
+
+    <div class="qr-container">
+      <img id="qr-img" src="qr.png" alt="Loading QR code..." onerror="handleError()" onload="handleLoad()" />
+    </div>
+
+    <div class="steps">
+      <ol>
+        <li>Open <strong>WhatsApp</strong> on your mobile phone</li>
+        <li>Tap <strong>Settings</strong> or <strong>Menu (⋮)</strong></li>
+        <li>Select <strong>Linked Devices</strong> &rarr; <strong>Link a Device</strong></li>
+        <li>Point your camera at this QR code to log in</li>
+      </ol>
+    </div>
+
+    <div class="footer" id="footer-text">
+      Auto-updating in background &bull; Last refreshed: <span id="time">--:--:--</span>
+    </div>
+  </div>
+
+  <script>
+    const img = document.getElementById('qr-img');
+    const timeEl = document.getElementById('time');
+    const badge = document.getElementById('badge');
+    const statusText = document.getElementById('status-text');
+
+    function refreshQR() {
+      img.src = 'qr.png?t=' + Date.now();
+      timeEl.textContent = new Date().toLocaleTimeString();
+    }
+
+    function handleLoad() {
+      statusText.textContent = 'Scan QR with WhatsApp';
+      badge.style.borderColor = 'rgba(37, 211, 102, 0.4)';
+    }
+
+    function handleError() {
+      statusText.textContent = 'Generating fresh QR code...';
+    }
+
+    setInterval(refreshQR, 2000);
+    refreshQR();
+  </script>
+</body>
+</html>

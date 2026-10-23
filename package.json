@@ -1,0 +1,13 @@
+{
+  "name": "autoroster",
+  "version": "1.0.0",
+  "main": "add-to-group.js",
+  "scripts": {
+    "start": "node add-to-group.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0"
+  }
+}
